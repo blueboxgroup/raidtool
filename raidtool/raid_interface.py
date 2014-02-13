@@ -26,7 +26,7 @@ from collections import namedtuple
 
 RAID_TYPES = {
     '13c1': '3WARE',
-    'beef': 'LSI'
+    '1000': 'LSI'
 }
 
 
