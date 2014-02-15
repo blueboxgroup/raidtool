@@ -56,7 +56,7 @@ class RaidInterface(object):
         return matches.group(1)
 
     def _get_disk_hwinfo(self):
-        cmd = "lshw -class disk -json 2> /dev/null"
+        cmd = "sudo lshw -class disk -json 2> /dev/null"
         output = subprocess.check_output(cmd, shell=True)
         jsonout = "[%s]" % output
         data = json.loads(jsonout)
@@ -99,7 +99,7 @@ class ThreeWareRaidInterface(RaidInterface):
         if not businfo:
             return None
         c, u = self._chassis_unit_from_businfo(businfo)
-        cmd = "tw-cli /c%d/u%d show" % (c, u)
+        cmd = "sudo tw-cli /c%d/u%d show" % (c, u)
         proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
 
         entries = []
@@ -116,7 +116,7 @@ class ThreeWareRaidInterface(RaidInterface):
         if unit.type != 'SINGLE':
             raise Exception("Cannot retrieve wwn for raided blockdevs")
 
-        cmd = "tw-cli /c%s/%s show wwn" % (c, unit.vport)
+        cmd = "sudo tw-cli /c%s/%s show wwn" % (c, unit.vport)
         output = subprocess.check_output(cmd, shell=True)
         wwn = output.split('=')[1].strip()
         return wwn
